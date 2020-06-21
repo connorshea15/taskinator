@@ -65,6 +65,8 @@ var createTaskEl = function(taskDataObj) {
         ////////////////////////////////////
         tasks.push(taskDataObj);
 
+        saveTasks();
+
         var taskActionsEl = createTaskActions(taskIdCounter);
         listItemEl.appendChild(taskActionsEl);
 
@@ -153,6 +155,8 @@ var deleteTask = function(taskId) {
 
     // reassign tasks array to be the same as updatedTaskArr
     tasks = updatedTaskArr;
+
+    saveTasks();
 };
 
 var editTask = function(taskId) {
@@ -187,6 +191,8 @@ var completeEditTask = function(taskName, taskType, taskId) {
           }
     };
 
+    saveTasks();
+
     alert("Task Updated!");
 
     formEl.removeAttribute("data-task-id");
@@ -219,6 +225,7 @@ var completeEditTask = function(taskName, taskType, taskId) {
         tasks[i].status = statusValue;
         }
     };
+    saveTasks();
 };
 
 var dragTaskHandler = function(event) {
@@ -264,6 +271,8 @@ var dropTaskHandler = function(event) {
         tasks[i].status = statusSelectEl.value.toLowerCase();
         }
     };
+
+    saveTasks();
 };
 
 var dragLeaveHandler = function(event) {
@@ -273,6 +282,21 @@ var dragLeaveHandler = function(event) {
     }
 };
 
+var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+};
+
+var loadTasks = function() {
+    // get tasks from local storage
+    tasks = localStorage.getItem("tasks");
+    console.log(tasks);    
+    
+    // convert tasks from stringified format back into an array of objects
+
+    // iterate through tasks array and create task elements on the page from it
+
+};
+
 formEl.addEventListener("submit", taskFormHandler);
 pageContentEl.addEventListener("click", taskButtonHandler);
 pageContentEl.addEventListener("change", taskStatusChangeHandler);
@@ -280,3 +304,4 @@ pageContentEl.addEventListener("dragstart", dragTaskHandler);
 pageContentEl.addEventListener("dragover", dropZoneDragHandler);
 pageContentEl.addEventListener("drop", dropTaskHandler);
 pageContentEl.addEventListener("dragleave", dragLeaveHandler);
+loadTasks();
